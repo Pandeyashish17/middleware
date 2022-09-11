@@ -1,9 +1,21 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const express = require("express");
+const bodyparser = require("body-parser");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const multer = require("multer");
+const dotenv = require("dotenv");
 
 const app = express();
 dotenv.config();
+
+app.use(cors({ origin: "*" }));
+
+app.use(bodyparser.json({ extended: true }));
+
+app.use(bodyparser.urlencoded({ extended: true }));
+
+app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   res.send("it is working");

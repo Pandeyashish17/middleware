@@ -1,5 +1,8 @@
 const express = require("express");
-const getBlog = require("../controller/blogController");
+const blog = require("../controller/blogController");
 const router = express.Router();
-router.get("/", getBlog);
+router.get("/", blog.getBlog);
+router.get("/:slug", blog.getSingleBlog);
+router.delete("/:id", blog.deleteBlog);
+router.post("/", blog.postBlog);
 module.exports = router;
