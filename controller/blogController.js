@@ -20,9 +20,13 @@ module.exports.getSingleBlog = async (req, res) => {
 };
 
 module.exports.deleteBlog = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send("no post found of that id");
   try {
-    const blogData = await blogModel.deleteOne({ id: req.params.id });
-    res.status(200).json({ data: blogData, data: deleted });
+    const blogData = await blogModel.findByIdAndRemove(id);
+    res.status(200).json({ data: blogData });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -35,6 +39,7 @@ module.exports.postBlog = async (req, res) => {
       slug: req.body.slug,
       excerpt: req.body.excerpt,
       body: req.body.body,
+      image: req.body.image,
     });
     await blogData.save();
     res
