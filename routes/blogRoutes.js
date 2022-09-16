@@ -27,5 +27,9 @@ router.get("/", blog.getBlog);
 router.get("/:slug", blog.getSingleBlog);
 router.delete("/:id", blog.deleteBlog);
 // router.post("/", upload.single("image"), blog.postBlog);
-router.post("/", blog.postBlog);
+router.post("/", auth.get, blog.postBlog);
+
+router.post("/login", blog.login);
+router.post("/signup", blog.signup);
+
 module.exports = router;

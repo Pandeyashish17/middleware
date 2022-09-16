@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const blogModel = require("../model/blogSchema");
-
+ 
+const jwt = require("jsonwebtoken");
 module.exports.getBlog = async (req, res) => {
   try {
     const blogData = await blogModel.find();
@@ -12,7 +12,7 @@ module.exports.getBlog = async (req, res) => {
 
 module.exports.getSingleBlog = async (req, res) => {
   try {
-    const blogData = await blogModel.find({ slug: req.params.slug });
+    const blogData = await blogModel.findOne({ slug: req.params.slug });
     res.status(200).json({ data: blogData });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -48,4 +48,26 @@ module.exports.postBlog = async (req, res) => {
   } catch (error) {
     res.status(404).json({ messages: error.message });
   }
+};
+
+module.exports.signup = async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  let key = "sdjsjdfdsfueafdsacadsxzx";
+  console.log(req.body, "dfdf");
+  const token = jwt.sign({ email, password }, key);
+  console.log(token);
+  res.status(200).json({ token });
+};
+
+module.exports.login = async (req, res,next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const token = req.body.token;
+  console.log(req.body, req.headers.authorization);
+  let key = "sdjsjdfdsfueafdsacadsxzx";
+
+  // const verify = jwt.verify(token, key);
+  res.status(200).json({ token: token });
+  return true
 };
